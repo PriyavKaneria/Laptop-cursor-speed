@@ -5,6 +5,7 @@ var trackSpeed = true
 var trackInterval = 50
 var movingAverage = true
 var movingAverageLength = 10
+var rounding = true
 
 // variables
 var currentPosition = { x: 0, y: 0 }
@@ -48,7 +49,7 @@ function getSpeed(time) {
 	var averageSpeed =
 		speedHistory.reduce((a, b) => a + b, 0) / speedHistory.length
 
-	return Math.round(averageSpeed)
+	return rounding ? Math.round(averageSpeed) : averageSpeed
 }
 
 function renderSpeedTest(time) {
@@ -107,9 +108,14 @@ function clear() {
 
 function framesChanged() {
 	var frames = document.getElementById("frames").value
-    if (frames < movingAverageLength) {
-        speedHistory = speedHistory.slice(movingAverageLength - frames, -1)
-    }
+	if (frames < movingAverageLength) {
+		speedHistory = speedHistory.slice(movingAverageLength - frames, -1)
+	}
 	movingAverageLength = frames
 	framesValue.innerHTML = frames
+}
+
+function changeRounding() {
+	var _rounding = document.getElementById("roundOff")
+	rounding = _rounding.checked
 }
