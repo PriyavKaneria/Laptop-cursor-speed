@@ -4,7 +4,7 @@
 var trackSpeed = true
 var trackInterval = 50
 var movingAverage = true
-var movingAverageLength = 5
+var movingAverageLength = 10
 
 // variables
 var currentPosition = { x: 0, y: 0 }
@@ -12,6 +12,7 @@ var lastPosition = { x: 0, y: 0 }
 var lastTime = performance.now()
 var speedElement = document.getElementById("speed")
 var performanceElement = document.getElementById("performance")
+var framesValue = document.getElementById("framesValue")
 var then = 0
 var speedHistory = []
 
@@ -37,16 +38,17 @@ function getSpeed(time) {
 
 	// Calculate speed
 	var currentSpeed = (distance / (currentTime - lastTime)) * 1000
-    // currentSpeed /= deltaTimeInSeconds
-    currentSpeed *= 60
+	// currentSpeed /= deltaTimeInSeconds
+	currentSpeed *= 60
 
-    speedHistory.push(currentSpeed)
-    if (speedHistory.length > movingAverageLength) {
-        speedHistory.shift()
-    }
-    var averageSpeed = speedHistory.reduce((a, b) => a + b, 0) / speedHistory.length
-    
-	return (averageSpeed)
+	speedHistory.push(currentSpeed)
+	if (speedHistory.length > movingAverageLength) {
+		speedHistory.shift()
+	}
+	var averageSpeed =
+		speedHistory.reduce((a, b) => a + b, 0) / speedHistory.length
+
+	return Math.round(averageSpeed)
 }
 
 function renderSpeedTest(time) {
@@ -69,7 +71,7 @@ function renderSpeedTest(time) {
 
 	// Update speed
 	speedElement.innerHTML = speed
-    performanceElement.innerHTML = performance.now() - time
+	performanceElement.innerHTML = performance.now() - time
 	requestAnimationFrame(renderSpeedTest)
 }
 
@@ -101,4 +103,13 @@ function line(x1, y1, x2, y2, color = "black") {
 
 function clear() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
+}
+
+function framesChanged() {
+	var frames = document.getElementById("frames").value
+    if (frames < movingAverageLength) {
+        speedHistory = speedHistory.slice(movingAverageLength - frames, -1)
+    }
+	movingAverageLength = frames
+	framesValue.innerHTML = frames
 }

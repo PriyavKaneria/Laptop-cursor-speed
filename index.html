@@ -9,6 +9,18 @@
 	</head>
 	<body>
 		<div>
+			Number of frames to consider for moving average
+			<input
+				type="range"
+				id="frames"
+				min="1"
+				max="100"
+				value="10"
+				oninput="framesChanged()"
+			/>
+			<span id="framesValue">10</span>
+		</div>
+		<div>
 			Speed of Cursor is
 			<span id="speed" style="text-decoration: underline">0</span>
 		</div>
@@ -16,6 +28,61 @@
 			Performance is
 			<span id="performance" style="text-decoration: underline">0</span>
 		</div>
+
+		<h1 id="laptop-cursor-speed">Laptop-cursor-speed</h1>
+		<p>Laptop (using trackpad) cursor speed on the edge</p>
+		<p>
+			Open the
+			<a href="https://priyavkaneria.github.io/Laptop-cursor-speed/">demo</a>
+		</p>
+		<h2 id="what-is-this">What is this?</h2>
+		<p>
+			Use a laptop and select a small area (don't lift your finger) and while
+			selecting move your finger to trackpad edge. Most probably you cursor will
+			now start moving to that edge direction on it's own.
+		</p>
+		<p>
+			I don't know what that feature is called so let's assume it is "Trackpad
+			Edge Cursor Speed". I have seen this feature in Windows 10+. I don't know
+			if it is available in other OS or not.
+		</p>
+		<p>
+			In this repo I have tried to calculate the speed of cursor when it is
+			moving on it's own. I have used <code>mousemove</code> event to calculate
+			the speed. I have used <code>requestAnimationFrame</code> to calculate the
+			speed. I have used <code>performance.now()</code> to calculate the time
+			difference between two frames.
+		</p>
+		<h2 id="confusion">Confusion</h2>
+		<p>
+			Normally, the performance stays from 0-2. And speed seems somewhat
+			accurate. But whe in TECS mode, the performance starts to fluctuate and
+			slowly increase till 16 and then falls back to 0. And the speed is not
+			accurate as it keeps decreasing for the same cursor speed. (probably due
+			to this fluctuation in performance, but even after performance resets, the
+			speed keeps decreasing)
+		</p>
+		<p>
+			If you have any ideas on how and why this might happen please let me know.
+		</p>
+		<h2
+			id="do-raise-a-issue-or-pr-if-any-improvements-can-be-made-to-the-code-or-any-inaccuracy-is-found-in-code-or-documentation"
+		>
+			Do raise a issue or PR if any improvements can be made to the code or any
+			inaccuracy is found in code or documentation.
+		</h2>
+		<blockquote>
+			<p>
+				My speed calculation - <code>speed = distance / time</code> (distance is
+				calculated using pythagoras theorem)
+			</p>
+			<p>
+				The speed shown is moving average of last 10 frames. Configurable via
+				the Slider. Please raise an issue if there are any issues in the
+				calculation
+			</p>
+		</blockquote>
+
 		<canvas id="canvas"></canvas>
 	</body>
 	<script src="index.js"></script>
